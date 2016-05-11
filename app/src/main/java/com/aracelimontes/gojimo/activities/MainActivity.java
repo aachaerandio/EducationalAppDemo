@@ -1,11 +1,14 @@
-package com.aracelimontes.gojimo;
+package com.aracelimontes.gojimo.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.aracelimontes.gojimo.CustomApiClient;
+import com.aracelimontes.gojimo.R;
 import com.aracelimontes.gojimo.adapters.QualificationAdapter;
 import com.aracelimontes.gojimo.entity.Qualification;
 
@@ -30,15 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Qualifications");
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mLoading = findViewById(R.id.progressSpinner);
-        mLoading.setVisibility(View.GONE);
+        mLoading.setVisibility(View.VISIBLE);
 
-        mAdapter = new QualificationAdapter(this);
+        mAdapter = new QualificationAdapter(getSupportFragmentManager(), this);
         mRecyclerView.setAdapter(mAdapter);
         
         customApiClient = new CustomApiClient();
@@ -53,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Qualification>> call, Throwable t) {
-
+                mLoading.setVisibility(View.GONE);
+                Toast.makeText(MainActivity.this, "Error loading qualifications", Toast.LENGTH_SHORT).show();
             }
         });
     }
