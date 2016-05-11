@@ -25,12 +25,8 @@ public class CustomApiClient {
                 .create(QualificationsService.class);
     }
 
-    /**
-     * no-cache Forces caches ask the server for validation before releasing a cached copy,
-     * so if the server says that the cached version is still fresh it is served from the cache.
-     */
     public interface QualificationsService {
-        @Headers("Cache-Control: no-cache")
+        @Headers("Cache-Control: max-age=640000")
         @GET("qualifications")
         Call<List<Qualification>> listQualifications();
     }
